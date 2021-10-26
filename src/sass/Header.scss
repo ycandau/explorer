@@ -1,0 +1,27 @@
+#header {
+  color: var(--color-foreground);
+  background-color: var(--color-background);
+
+  border-style: solid;
+  border-width: 1px 0 1px 0;
+  border-color: var(--color-border);
+
+  transition: color 300ms, background-color 300ms, border-color 300ms;
+
+  padding: 0 2vw;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .app-name {
+    font-family: 'Fira mono';
+    font-size: 30px;
+  }
+
+  .theme-toggle {
+    .icon {
+      font-size: 30px;
+    }
+  }
+}

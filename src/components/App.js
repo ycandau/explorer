@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // Imports
 
-import { useState, useEffect } from 'react';
+import Header from './Header';
 
 import '../css/colors.css';
 import '../css/App.css';
@@ -10,16 +10,10 @@ import '../css/App.css';
 // Default export
 
 const App = () => {
-  const [dark, setDark] = useState(true);
-
-  useEffect(() => {
-    document.body.dataset.theme = dark ? 'dark' : 'light';
-  }, [dark]);
-
   return (
     <main id="app">
-      <section className="header">Header</section>
-      <section className="file-explorer">Text</section>
+      <Header />
+      <section className="file-explorer">File explorer</section>
       <section className="rest">Rest of the App</section>
     </main>
   );
