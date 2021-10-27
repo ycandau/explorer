@@ -4,6 +4,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import useFileExplorerData from '../hooks/useFileExploreData';
+
 import Header from './Header';
 import FileExplorer from './FileExplorer';
 
@@ -21,21 +23,19 @@ if (process.env.REACT_APP_API_BASE_URL) {
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-  const [trees, setTrees] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [error, setError] = useState(null);
+
+  const { state, setTrees } = useFileExplorerData();
+  const { trees } = state;
 
   useEffect(() => {
     setLoading(true);
     axios
       .get('/trees')
-      .then((res) => {
-        setTrees(res.data.trees);
-        setErrors(res.data.errors);
-      })
+      .then((res) => setTrees(res.data))
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [setTrees]);
 
   const toggleExpand = (treeId) => (fileId) => () => {
     setTrees((trees) => {
