@@ -1,0 +1,9 @@
+.tree {
+  border-style: solid;
+  border-width: 1px 0 0 0;
+  border-color: var(--color-border);
+
+  &:first-child {
+    border-width: 0 0 0 0;
+  }
+}
