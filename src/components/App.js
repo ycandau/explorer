@@ -2,9 +2,10 @@
 // Imports
 
 import { useState, useEffect } from 'react';
-import Header from './Header';
-
 import axios from 'axios';
+
+import Header from './Header';
+import FileExplorer from './FileExplorer';
 
 import '../css/colors.css';
 import '../css/App.css';
@@ -16,11 +17,12 @@ if (process.env.REACT_APP_API_BASE_URL) {
 /*eslint no-unused-vars: 0*/
 
 //------------------------------------------------------------------------------
-// Default export
+// Component
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-  const [trees, setTrees] = useState(null);
+  const [trees, setTrees] = useState([[]]);
+  const [errors, setErrors] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -28,17 +30,30 @@ const App = () => {
     axios
       .get('/trees')
       .then((res) => {
-        setTrees(res.data);
-        console.log(res.data);
+        setTrees(res.data.trees);
+        setErrors(res.data.errors);
       })
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
   }, []);
 
+  const toggleExpand = (treeId, fileId) => () => {
+    setTrees((trees) => {
+      const tree = trees[treeId];
+      const file = tree[fileId];
+      const newFile = { ...file, isExpanded: !file.isExpanded };
+      const newTree = [...tree];
+      newTree[fileId] = newFile;
+      const newTrees = [...trees];
+      newTrees[treeId] = newTree;
+      return newTrees;
+    });
+  };
+
   return (
     <main id="app">
       <Header />
-      <section className="file-explorer">File explorer</section>
+      <FileExplorer trees={trees} toggleExpand={toggleExpand} />
       <section className="rest">Rest of the App</section>
     </main>
   );
