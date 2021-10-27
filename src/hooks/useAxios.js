@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import axios from 'axios';
 
@@ -7,16 +7,13 @@ if (process.env.REACT_APP_API_BASE_URL) {
 }
 
 const useInitialGet = (dispatch) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
   useEffect(() => {
-    setLoading(true);
+    dispatch({ type: 'LOADING', payload: 'all' });
     axios
       .get('/trees')
       .then((res) => dispatch({ type: 'GET_TREES', payload: res.data }))
-      .catch((err) => setError(err))
-      .finally(() => setLoading(false));
+      .catch((err) => dispatch({ type: 'ERROR', payload: err })); // @todo
+    // .finally(() => dispatch({ type: 'FINISHED' }));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };
 

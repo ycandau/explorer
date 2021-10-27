@@ -15,22 +15,66 @@ const initState = {
 // Actions
 
 const getTrees = (state, payload) => {
-  const { trees, errors } = payload;
+  const { trees: serverTrees, errors } = payload;
+  const trees = serverTrees.map((tree, treeInd) => ({
+    ...tree,
+    treeInd,
+    status: 'LOADED',
+  }));
   return { ...state, trees, errors };
 };
 
 const toggleExpansion = (state, payload) => {
   const { treeInd, fileInd } = payload;
 
-  const tree = state.trees[treeInd];
-  const file = tree[fileInd];
-  const newFile = { ...file, isExpanded: !file.isExpanded };
-  const newTree = [...tree];
-  newTree[fileInd] = newFile;
-  const newTrees = [...state.trees];
-  newTrees[treeInd] = newTree;
+  const prevTree = state.trees[treeInd];
+  const prevFiles = prevTree.files;
+  const prevFile = prevFiles[fileInd];
 
-  return { ...state, trees: newTrees };
+  const file = { ...prevFile, isExpanded: !prevFile.isExpanded };
+  const files = [...prevFiles];
+  files[fileInd] = file;
+  const tree = { ...prevTree, files };
+  const trees = [...state.trees];
+  trees[treeInd] = tree;
+
+  return { ...state, trees };
+};
+
+//------------------------------------------------------------------------------
+// Predicate to accept all indexes or only the indexes passed in an array.
+
+const allOrSome = (payload) => {
+  // True for all
+  if (payload === 'all') {
+    return (_) => true;
+  }
+  // Or only when the index is included in a set
+  const set = new Set(payload);
+  return (treeInd) => set.has(treeInd);
+};
+
+//------------------------------------------------------------------------------
+
+const setStatus = (state, payload, status) => {
+  const changeThisTree = allOrSome(payload);
+
+  const trees = state.trees.map((prevTree) => {
+    const tree = changeThisTree(prevTree.treeInd)
+      ? { ...prevTree, status }
+      : prevTree;
+    return tree;
+  });
+
+  return { ...state, trees };
+};
+
+//------------------------------------------------------------------------------
+
+const setError = (state, payload) => {
+  console.error(payload);
+  const errors = [...state.errors, payload];
+  return { ...state, errors };
 };
 
 //------------------------------------------------------------------------------
@@ -43,6 +87,13 @@ const fileExplorerReducer = (state, { type, payload }) => {
 
     case 'TOGGLE_EXPANSION':
       return toggleExpansion(state, payload);
+
+    case 'LOADING':
+    case 'FINISHED':
+      return setStatus(state, payload, type);
+
+    case 'ERROR':
+      return setError(state, payload);
 
     default:
       throw new Error(`Unhandled action type: ${type}`);

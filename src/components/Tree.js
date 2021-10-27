@@ -16,28 +16,28 @@ const nextIndex = (file, index) => {
   return file.nextNonChild;
 };
 
-const filterVisible = (tree) => {
+const filterVisible = (files) => {
   const visibleFiles = [];
-  for (let i = 0; i < tree.length; ) {
-    const file = tree[i];
+  for (let i = 0; i < files.length; ) {
+    const file = files[i];
     visibleFiles.push(file);
     i = nextIndex(file, i);
   }
   return visibleFiles;
 };
 
-const Tree = ({ tree, treeInd, dispatch }) => {
-  const visibleFiles = filterVisible(tree);
-  const root = tree[0];
+const Tree = ({ tree, dispatch }) => {
+  const visibleFiles = filterVisible(tree.files);
+  const root = tree.files[0];
 
   return (
     <div className="tree">
-      <TreeHeader {...root} treeInd={treeInd} dispatch={dispatch} />
+      <TreeHeader {...root} treeInd={tree.treeInd} dispatch={dispatch} />
       {visibleFiles.map((file) => (
         <FileEntry
           key={file.ino}
           {...file}
-          treeInd={treeInd}
+          treeInd={tree.treeInd}
           dispatch={dispatch}
         />
       ))}
