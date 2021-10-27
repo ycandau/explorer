@@ -25,35 +25,35 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { state, setTrees } = useFileExplorerData();
+  const [state, dispatch] = useFileExplorerData();
   const { trees } = state;
 
   useEffect(() => {
     setLoading(true);
     axios
       .get('/trees')
-      .then((res) => setTrees(res.data))
+      .then((res) => dispatch({ type: 'GET_TREES', payload: res.data }))
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
-  }, [setTrees]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleExpand = (treeId) => (fileId) => () => {
-    setTrees((trees) => {
-      const tree = trees[treeId];
-      const file = tree[fileId];
-      const newFile = { ...file, isExpanded: !file.isExpanded };
-      const newTree = [...tree];
-      newTree[fileId] = newFile;
-      const newTrees = [...trees];
-      newTrees[treeId] = newTree;
-      return newTrees;
-    });
+    // setTrees((trees) => {
+    //   const tree = trees[treeId];
+    //   const file = tree[fileId];
+    //   const newFile = { ...file, isExpanded: !file.isExpanded };
+    //   const newTree = [...tree];
+    //   newTree[fileId] = newFile;
+    //   const newTrees = [...trees];
+    //   newTrees[treeId] = newTree;
+    //   return newTrees;
+    // });
   };
 
   return (
     <main id="app">
       <Header />
-      <FileExplorer trees={trees} toggleExpand={toggleExpand} />
+      <FileExplorer trees={trees} dispatch={dispatch} />
       <section className="rest"></section>
     </main>
   );

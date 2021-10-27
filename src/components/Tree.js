@@ -26,17 +26,19 @@ const filterVisible = (tree) => {
   return visibleFiles;
 };
 
-const Tree = ({ tree, toggleExpand }) => {
+const Tree = ({ tree, treeInd, dispatch }) => {
   const visibleFiles = filterVisible(tree);
+  const root = tree[0];
 
   return (
     <div className="tree">
-      <TreeHeader {...tree[0]} toggleExpand={toggleExpand} />
-      {visibleFiles.map((fileData) => (
+      <TreeHeader {...root} treeInd={treeInd} dispatch={dispatch} />
+      {visibleFiles.map((file) => (
         <FileEntry
-          {...fileData}
-          key={fileData.index}
-          toggleExpand={toggleExpand}
+          key={file.ino}
+          {...file}
+          treeInd={treeInd}
+          dispatch={dispatch}
         />
       ))}
     </div>

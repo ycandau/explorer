@@ -9,8 +9,21 @@ import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 //------------------------------------------------------------------------------
 // Component
 
-const FileEntry = ({ name, index, depth, isDir, isExpanded, toggleExpand }) => {
+const FileEntry = ({
+  name,
+  index,
+  depth,
+  isDir,
+  isExpanded,
+  treeInd,
+  dispatch,
+}) => {
   const indent = 1.5;
+
+  const toggleExpansion = (treeInd, fileInd) => () => {
+    const payload = { treeInd, fileInd };
+    dispatch({ type: 'TOGGLE_EXPANSION', payload });
+  };
 
   const spacer = (
     <div className="spacer" style={{ width: `${depth * indent}em` }}></div>
@@ -21,7 +34,7 @@ const FileEntry = ({ name, index, depth, isDir, isExpanded, toggleExpand }) => {
       <FontAwesomeIcon
         icon={isExpanded ? faAngleDown : faAngleRight}
         className="icon"
-        onClick={toggleExpand(index)}
+        onClick={toggleExpansion(treeInd, index)}
       />
     </div>
   );
