@@ -9,14 +9,25 @@ import TreeHeader from './TreeHeader';
 //------------------------------------------------------------------------------
 // Component
 
-const Tree = ({ tree, toggleExpand }) => {
-  // Filter to the visible files
+const nextIndex = (file, index) => {
+  if (!file.isDir || file.isExpanded || file.nextNonChild === undefined) {
+    return index + 1;
+  }
+  return file.nextNonChild;
+};
+
+const filterVisible = (tree) => {
   const visibleFiles = [];
   for (let i = 0; i < tree.length; ) {
     const file = tree[i];
     visibleFiles.push(file);
-    i = !file.isDir || file.isExpanded ? i + 1 : file.nextNonChild;
+    i = nextIndex(file, i);
   }
+  return visibleFiles;
+};
+
+const Tree = ({ tree, toggleExpand }) => {
+  const visibleFiles = filterVisible(tree);
 
   return (
     <div className="tree">

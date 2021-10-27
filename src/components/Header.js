@@ -22,7 +22,7 @@ const Header = () => {
 
   return (
     <header id="header">
-      <div className="app-name">Explorer demo</div>
+      <div className="app-name">File explorer demo</div>
       <div className="theme-toggle">
         <FontAwesomeIcon
           icon={dark ? faMoon : faSun}
