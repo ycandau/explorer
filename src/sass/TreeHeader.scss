@@ -1,0 +1,20 @@
+.tree-header {
+  color: var(--color-foreground);
+  background-color: var(--color-background-1);
+
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  border-color: var(--color-border);
+
+  &:last-child {
+    border-width: 0 0 0 0;
+  }
+
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+
+  font-size: 12pt;
+  line-height: 2;
+}

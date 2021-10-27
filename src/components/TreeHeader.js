@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // Imports
 
-import '../css/FileEntry.css';
+import '../css/TreeHeader.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -9,14 +9,10 @@ import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 //------------------------------------------------------------------------------
 // Component
 
-const FileEntry = ({ name, index, depth, isDir, isExpanded, toggleExpand }) => {
+const TreeHeader = ({ name, index, isExpanded, toggleExpand }) => {
   const indent = 1.5;
 
-  const spacer = (
-    <div className="spacer" style={{ width: `${depth * indent}em` }}></div>
-  );
-
-  const expandToggle = isDir && (
+  const expandToggle = (
     <div className="expand-toggle" style={{ width: `${indent}em` }}>
       <FontAwesomeIcon
         icon={isExpanded ? faAngleDown : faAngleRight}
@@ -29,12 +25,11 @@ const FileEntry = ({ name, index, depth, isDir, isExpanded, toggleExpand }) => {
   const fileName = <div className="file-name">{name}</div>;
 
   return (
-    <div className="file-entry">
-      {spacer}
+    <div className="tree-header">
       {expandToggle}
       {fileName}
     </div>
   );
 };
 
-export default FileEntry;
+export default TreeHeader;

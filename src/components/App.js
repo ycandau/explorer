@@ -21,7 +21,7 @@ if (process.env.REACT_APP_API_BASE_URL) {
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-  const [trees, setTrees] = useState([[]]);
+  const [trees, setTrees] = useState([]);
   const [errors, setErrors] = useState([]);
   const [error, setError] = useState(null);
 
@@ -37,7 +37,7 @@ const App = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const toggleExpand = (treeId, fileId) => () => {
+  const toggleExpand = (treeId) => (fileId) => () => {
     setTrees((trees) => {
       const tree = trees[treeId];
       const file = tree[fileId];
@@ -54,7 +54,7 @@ const App = () => {
     <main id="app">
       <Header />
       <FileExplorer trees={trees} toggleExpand={toggleExpand} />
-      <section className="rest">Rest of the App</section>
+      <section className="rest"></section>
     </main>
   );
 };

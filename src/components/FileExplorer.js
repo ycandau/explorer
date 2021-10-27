@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // Imports
 
-import FileEntry from './FileEntry';
+import Tree from './Tree';
 
 import '../css/FileExplorer.css';
 
@@ -9,23 +9,10 @@ import '../css/FileExplorer.css';
 // Component
 
 const FileExplorer = ({ trees, toggleExpand }) => {
-  const files = trees[0];
-
-  const visibleFiles = [];
-  for (let i = 0; i < files.length; ) {
-    const file = files[i];
-    visibleFiles.push(file);
-    i = !file.isDir || file.isExpanded ? i + 1 : file.nextNonChild;
-  }
-
   return (
     <section className="file-explorer">
-      {visibleFiles.map((fileData) => (
-        <FileEntry
-          {...fileData}
-          key={fileData.index}
-          toggleExpand={toggleExpand}
-        />
+      {trees.map((tree, index) => (
+        <Tree tree={tree} toggleExpand={toggleExpand(index)} key={index} />
       ))}
     </section>
   );
