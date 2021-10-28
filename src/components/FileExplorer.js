@@ -8,11 +8,11 @@ import '../css/FileExplorer.css';
 //------------------------------------------------------------------------------
 // Component
 
-const FileExplorer = ({ trees, toggleExpand }) => {
+const FileExplorer = ({ trees, dispatch }) => {
   return (
     <section className="file-explorer">
-      {trees.map((tree, index) => (
-        <Tree tree={tree} toggleExpand={toggleExpand(index)} key={index} />
+      {trees.map((tree) => (
+        <Tree key={tree.treeInd} tree={tree} dispatch={dispatch} />
       ))}
     </section>
   );

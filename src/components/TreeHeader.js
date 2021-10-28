@@ -9,15 +9,20 @@ import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 //------------------------------------------------------------------------------
 // Component
 
-const TreeHeader = ({ name, index, isExpanded, toggleExpand }) => {
+const TreeHeader = ({ name, index, isExpanded, treeInd, dispatch }) => {
   const indent = 1.5;
+
+  const toggleExpansion = (treeInd, fileInd) => () => {
+    const payload = { treeInd, fileInd };
+    dispatch({ type: 'TOGGLE_EXPANSION', payload });
+  };
 
   const expandToggle = (
     <div className="expand-toggle" style={{ width: `${indent}em` }}>
       <FontAwesomeIcon
         icon={isExpanded ? faAngleDown : faAngleRight}
         className="icon"
-        onClick={toggleExpand(index)}
+        onClick={toggleExpansion(treeInd, index)}
       />
     </div>
   );

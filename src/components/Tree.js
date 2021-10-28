@@ -9,23 +9,36 @@ import TreeHeader from './TreeHeader';
 //------------------------------------------------------------------------------
 // Component
 
-const Tree = ({ tree, toggleExpand }) => {
-  // Filter to the visible files
-  const visibleFiles = [];
-  for (let i = 0; i < tree.length; ) {
-    const file = tree[i];
-    visibleFiles.push(file);
-    i = !file.isDir || file.isExpanded ? i + 1 : file.nextNonChild;
+const nextIndex = (file, index) => {
+  if (!file.isDir || file.isExpanded || file.nextNonChild === undefined) {
+    return index + 1;
   }
+  return file.nextNonChild;
+};
+
+const filterVisible = (files) => {
+  const visibleFiles = [];
+  for (let i = 0; i < files.length; ) {
+    const file = files[i];
+    visibleFiles.push(file);
+    i = nextIndex(file, i);
+  }
+  return visibleFiles;
+};
+
+const Tree = ({ tree, dispatch }) => {
+  const visibleFiles = filterVisible(tree.files);
+  const root = tree.files[0];
 
   return (
     <div className="tree">
-      <TreeHeader {...tree[0]} toggleExpand={toggleExpand} />
-      {visibleFiles.map((fileData) => (
+      <TreeHeader {...root} treeInd={tree.treeInd} dispatch={dispatch} />
+      {visibleFiles.map((file) => (
         <FileEntry
-          {...fileData}
-          key={fileData.index}
-          toggleExpand={toggleExpand}
+          key={file.id}
+          {...file}
+          treeInd={tree.treeInd}
+          dispatch={dispatch}
         />
       ))}
     </div>
