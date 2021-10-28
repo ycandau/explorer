@@ -1,28 +1,23 @@
 //------------------------------------------------------------------------------
 // Imports
 
-import '../css/TreeHeader.css';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+
+import '../css/TreeHeader.css';
 
 //------------------------------------------------------------------------------
 // Component
 
-const TreeHeader = ({ name, index, isExpanded, treeInd, dispatch }) => {
+const TreeHeader = ({ name, isExpanded, toggleExpansion }) => {
   const indent = 1.5;
-
-  const toggleExpansion = (treeInd, fileInd) => () => {
-    const payload = { treeInd, fileInd };
-    dispatch({ type: 'TOGGLE_EXPANSION', payload });
-  };
 
   const expandToggle = (
     <div className="expand-toggle" style={{ width: `${indent}em` }}>
       <FontAwesomeIcon
         icon={isExpanded ? faAngleDown : faAngleRight}
         className="icon"
-        onClick={toggleExpansion(treeInd, index)}
+        onClick={toggleExpansion}
       />
     </div>
   );
@@ -36,5 +31,7 @@ const TreeHeader = ({ name, index, isExpanded, treeInd, dispatch }) => {
     </div>
   );
 };
+
+//------------------------------------------------------------------------------
 
 export default TreeHeader;

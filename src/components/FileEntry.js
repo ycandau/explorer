@@ -1,29 +1,16 @@
 //------------------------------------------------------------------------------
 // Imports
 
-import '../css/FileEntry.css';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+
+import '../css/FileEntry.css';
 
 //------------------------------------------------------------------------------
 // Component
 
-const FileEntry = ({
-  name,
-  index,
-  depth,
-  isDir,
-  isExpanded,
-  treeInd,
-  dispatch,
-}) => {
+const FileEntry = ({ name, depth, isDir, isExpanded, toggleExpansion }) => {
   const indent = 1.5;
-
-  const toggleExpansion = (treeInd, fileInd) => () => {
-    const payload = { treeInd, fileInd };
-    dispatch({ type: 'TOGGLE_EXPANSION', payload });
-  };
 
   const spacer = (
     <div className="spacer" style={{ width: `${depth * indent}em` }}></div>
@@ -34,7 +21,7 @@ const FileEntry = ({
       <FontAwesomeIcon
         icon={isExpanded ? faAngleDown : faAngleRight}
         className="icon"
-        onClick={toggleExpansion(treeInd, index)}
+        onClick={toggleExpansion}
       />
     </div>
   );
@@ -49,5 +36,7 @@ const FileEntry = ({
     </div>
   );
 };
+
+//------------------------------------------------------------------------------
 
 export default FileEntry;
