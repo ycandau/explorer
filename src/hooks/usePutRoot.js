@@ -1,20 +1,19 @@
-import { useEffect } from 'react';
-
 import axios from 'axios';
 
 if (process.env.REACT_APP_API_BASE_URL) {
   axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 }
 
-const useInitialGet = (dispatch) => {
-  useEffect(() => {
+const usePutRoot = (dispatch) => {
+  const put = (root) => {
     dispatch({ type: 'LOADING', payload: 'all' });
     axios
-      .get('/api')
+      .put('/api', root)
       .then((res) => dispatch({ type: 'SET_TREES', payload: res.data }))
       .catch((err) => dispatch({ type: 'ERROR', payload: err }))
       .finally(() => dispatch({ type: 'FINISHED' }));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  };
+  return put;
 };
 
-export default useInitialGet;
+export default usePutRoot;
