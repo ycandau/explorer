@@ -1,7 +1,6 @@
 //------------------------------------------------------------------------------
 // Imports
 
-import axios from 'axios';
 import { useReducer } from 'react';
 
 //------------------------------------------------------------------------------
@@ -14,36 +13,6 @@ const initState = {
 
 //------------------------------------------------------------------------------
 // Helpers
-
-const nextFileIndex = (file, isExpanded, index) => {
-  if (!file.isDir || isExpanded || file.nextNonChild === undefined) {
-    return index + 1;
-  }
-  return file.nextNonChild;
-};
-
-const filterExpanded = (files, fileInd) => {
-  const expandedDirs = [];
-  for (let i = 0; i < files.length; ) {
-    const file = files[i];
-    const isExpanded = i === fileInd ? !file.isExpanded : file.isExpanded;
-
-    if (isExpanded) {
-      expandedDirs.push([file.id, file.path]);
-    }
-    i = nextFileIndex(file, isExpanded, i);
-  }
-  return expandedDirs;
-};
-
-const getUpdatedRoot = (state, treeInd, fileInd) => {
-  const tree = state.trees[treeInd];
-  const files = tree.files;
-  const { name, path, id } = files[0];
-  const expandedDirs = filterExpanded(files, fileInd);
-
-  return { name, path, id, expandedDirs };
-};
 
 // Create a predicate to accept all indexes or only indexes passed in an array.
 const allOrSome = (payload) => {
@@ -70,13 +39,9 @@ const setTrees = (state, payload) => {
 };
 
 const toggleExpansion = async (state, payload) => {
-  const { treeInd, fileInd } = payload;
+  // const { treeInd, fileInd } = payload;
 
   return state;
-  // return axios
-  //   .put('/api', getUpdatedRoot(state, treeInd, fileInd))
-  //   .then((res) => setTrees(state, res.data))
-  //   .catch(() => {});
 
   // const prevTree = state.trees[treeInd];
   // const prevFiles = prevTree.files;
