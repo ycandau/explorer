@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------
 // Imports
 
+import axios from 'axios';
 import { useReducer } from 'react';
 
 //------------------------------------------------------------------------------
@@ -24,8 +25,42 @@ const getTrees = (state, payload) => {
   return { ...state, trees, errors };
 };
 
+const nextIndex = (file, fileInd, index) => {
+  const isExpanded = index === fileInd ? !file.isExpanded : file.isExpanded;
+
+  if (!file.isDir || isExpanded || file.nextNonChild === undefined) {
+    return index + 1;
+  }
+  return file.nextNonChild;
+};
+
+const filterExpanded = (files) => {
+  const expandedDirs = [];
+  for (let i = 0; i < files.length; ) {
+    const file = files[i];
+    if (file.isExpanded) {
+      expandedDirs.push(file);
+    }
+    i = nextIndex(file, i);
+  }
+  return expandedDirs;
+};
+
+const updatedRoot = (state, treeInd, fileInd) => {
+  const tree = state.trees[treeInd];
+  const files = tree.files;
+  const { name, path, id } = files[0];
+  const expandedDirs = filterExpanded(files, fileInd);
+
+  return { name, path, id, expandedDirs };
+};
+
 const toggleExpansion = (state, payload) => {
   const { treeInd, fileInd } = payload;
+  axios
+    .put('/api', updatedRoot(state, treeInd, fileInd))
+    .then((res) => console.log(res.data))
+    .catch(() => {});
 
   const prevTree = state.trees[treeInd];
   const prevFiles = prevTree.files;

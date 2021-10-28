@@ -10,7 +10,7 @@ const useInitialGet = (dispatch) => {
   useEffect(() => {
     dispatch({ type: 'LOADING', payload: 'all' });
     axios
-      .get('/trees')
+      .get('/api')
       .then((res) => dispatch({ type: 'GET_TREES', payload: res.data }))
       .catch((err) => dispatch({ type: 'ERROR', payload: err })); // @todo
     // .finally(() => dispatch({ type: 'FINISHED' }));

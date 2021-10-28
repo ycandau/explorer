@@ -35,7 +35,7 @@ const Tree = ({ tree, dispatch }) => {
       <TreeHeader {...root} treeInd={tree.treeInd} dispatch={dispatch} />
       {visibleFiles.map((file) => (
         <FileEntry
-          key={file.ino}
+          key={file.id}
           {...file}
           treeInd={tree.treeInd}
           dispatch={dispatch}
