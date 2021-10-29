@@ -29,4 +29,4 @@ yarn-error.log*
 *.scss.map
 
 # environment
-.env*
+.env

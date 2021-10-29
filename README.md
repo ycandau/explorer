@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+# File explorer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- [About](#about)
+- [Installation](#installation)
+- [Overview](#overview)
 
-## Available Scripts
+- [Implementation and choices](#implementation-and-choices)
+- [Notes](#notes)
+- [Things to improve](#things-to-improve)
+- [Issues](#issues)
+- [Dependencies](#dependencies)
+- [Development dependencies](#development-dependencies)
 
-In the project directory, you can run:
+---
 
-### `yarn start`
+## About
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This repository contains a a **file explorer** component built with [React](https://reactjs.org/) and [Sass](https://github.com/sass/dart-sass). It renders a set of directory trees served by a backend API, and is updated on file changes through a WebSocket connection.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `yarn test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Clone the repository with [git](https://git-scm.com/):
 
-### `yarn build`
+```shell
+git clone git@github.com:ycandau/explorer.git
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Change directory to the root of the repository:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```shell
+cd explorer
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Install all the dependencies with [yarn](https://classic.yarnpkg.com/en/):
 
-### `yarn eject`
+```shell
+yarn install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Setup the local environment variables in the `.env` file:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```shell
+PORT=3000
+REACT_APP_WEBSOCKET_URL=ws://localhost:8000
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Run the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```shell
+yarn start
+```
 
-## Learn More
+The app needs the backend API found [here](https://github.com/ycandau/explorer_api). Start the backend server before starting the app.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Overview
 
-### Code Splitting
+Here is the component embedded in a page, in dark mode:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+![Dark mode](./doc/dark_mode.png)
 
-### Analyzing the Bundle Size
+And in light mode:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![Light mode](./doc/light_mode.png)
 
-### Making a Progressive Web App
+The dark and light themes are controlled from a toggle and implemented using CSS variables and data attribute selectors.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Folders and non folders are colored differently to make it easier to distinguish them.
 
-### Advanced Configuration
+A folder can be expanded and collapsed by clicking anywhere on the corresponding highlighted line.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+A little extra feedback is provided to the user with a CSS color and scale transition on the caret icon, when the cursor hovers over the line.
 
-### Deployment
+The whole tree can also be closed by clicking on the cross situated at the right of the root folder.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `yarn build` fails to minify
+## Implementation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+I used React's functional components since it is the recommended approach in the latest versions of the framework.
+
+To manage the app state I considered three alternatives:
+
+- Multiple `useState()` hooks.
+- A single `useReducer()` hook with a reducer function.
+- A dedicated state container library like [Redux](https://redux.js.org/).
+
+I adopted the second option as I find that it is much easier to write modular code with a reducer, but the state wasn't complex enough to justify using a library such as Redux.
+
+To keep the code modular I use a number of custom hooks to:
+
+- Manage the application state.
+- Fetch initial data from the server once after the first render.
+- Establish the WebSocket connection with the server.
+- Update the server when folders are expanded or collapsed.
+- Update the server when trees are closed.
+
+The component seems to run smoothly even with large folders such as `node_modules`. As discussed in the README for the server, only data on expanded folders is exchanged to avoid a brute force recursion through the full folder structure. The component also takes advantage of information on the tree structure encoded in the arrays by the server.
+
+Some of the user actions are well suited for optimistic rendering. When collapsing a folder or closing a tree we can update the local state before sending the asynchronous request to the server. On the other hand, expanding a folder does require waiting for the response from the server.
+
+I considered providing visual feedback to indicate the status of the asynchronous requests (loading and such...). But due to the short delays I decided against it as a brief flicker might be more distracting than helpful.
+
+---
+
+## Things to do
+
+- Resizable sections
+- A way to add trees from the file explorer
+- Filtering by glob or regex patterns
+- File type icons
+- Custom scroll bars
+
+---
+
+## Dependencies
+
+- [React](https://reactjs.org/): A JavaScript library for building user interfaces.
+- [axios](https://github.com/axios/axios): Promise based HTTP client for the browser and Node.js.
+- [react-fontawesome](https://github.com/FortAwesome/react-fontawesome): Font Awesome 5 React components using SVG with JS.
+
+---
+
+## Development dependencies
+
+- [Sass](https://github.com/sass/dart-sass): CSS extension language.
