@@ -38,6 +38,8 @@ const setTrees = (state, payload) => {
   return { ...state, trees, errors };
 };
 
+//------------------------------------------------------------------------------
+
 const toggleExpansion = (state, payload) => {
   const { treeInd, fileInd } = payload;
 

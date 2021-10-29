@@ -21,18 +21,22 @@ const FileEntry = ({ name, depth, isDir, isExpanded, toggleExpansion }) => {
       <FontAwesomeIcon
         icon={isExpanded ? faAngleDown : faAngleRight}
         className="icon"
-        onClick={toggleExpansion}
       />
     </div>
   );
 
-  const fileName = <div className="file-name">{name}</div>;
+  const onClick = isDir ? toggleExpansion : () => {};
+  const cls = `file-name ${isDir ? 'is-dir' : 'is-file'}`;
+
+  const fileName = <div className={cls}>{name}</div>;
 
   return (
-    <div className="file-entry">
+    <div className="file-line">
       {spacer}
-      {expandToggle}
-      {fileName}
+      <div className="file-entry" onClick={onClick}>
+        {expandToggle}
+        {fileName}
+      </div>
     </div>
   );
 };

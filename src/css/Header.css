@@ -28,7 +28,7 @@
 }
 #header .theme-toggle:hover {
   cursor: pointer;
-  color: var(--color-bright-yellow);
-  background-color: var(--color-highlight-yellow);
+  color: var(--color-theme-toggle);
+  background-color: var(--color-theme-toggle-bg);
   transition: color 300ms, background-color 300ms, border-color 300ms;
 }

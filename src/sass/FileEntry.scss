@@ -1,4 +1,4 @@
-.file-entry {
+.file-line {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -9,5 +9,33 @@
 
   .spacer {
     // border: 1px solid red;
+  }
+
+  .file-entry {
+    color: var(--color-green);
+    flex: 1;
+    display: flex;
+
+    &:hover {
+      background-color: var(--color-higlight);
+      cursor: pointer;
+    }
+  }
+
+  .expand-toggle {
+    //
+  }
+
+  .is-dir {
+    color: var(--color-green);
+  }
+
+  .is-file {
+    color: var(--color-blue);
+  }
+
+  .file-name {
+    flex: 1;
+    text-align: left;
   }
 }

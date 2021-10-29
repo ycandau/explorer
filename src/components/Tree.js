@@ -36,7 +36,7 @@ const filterExpanded = (files, fileInd) => {
   for (let i = 0; i < files.length; ) {
     const file = files[i];
 
-    // Toggled expansion state to be
+    // The new expanded state that will be after toggling
     const isExpanded = i === fileInd ? !file.isExpanded : file.isExpanded;
 
     if (isExpanded) {
@@ -52,6 +52,8 @@ const filterExpanded = (files, fileInd) => {
 
 const Tree = ({ tree, dispatch }) => {
   const put = usePutRoot(dispatch);
+
+  // Action
 
   const toggleExpansion = (fileInd) => () => {
     const files = tree.files;
@@ -71,6 +73,8 @@ const Tree = ({ tree, dispatch }) => {
 
   const root = tree.files[0];
   const visibleFiles = filterVisible(tree.files);
+
+  // Return component
 
   return (
     <div className="tree">
