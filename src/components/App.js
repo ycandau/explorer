@@ -3,6 +3,7 @@
 
 import useAppData from '../hooks/useAppData';
 import useInitialGet from '../hooks/useInitialGet';
+import useWebSocket from '../hooks/useWebSocket';
 
 import Header from './Header';
 import FileExplorer from './FileExplorer';
@@ -18,6 +19,7 @@ const App = () => {
   const { trees } = state;
 
   useInitialGet(dispatch);
+  useWebSocket(dispatch);
 
   return (
     <main id="app">
