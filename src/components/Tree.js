@@ -55,6 +55,14 @@ const Tree = ({ tree, dispatch }) => {
 
   const toggleExpansion = (fileInd) => () => {
     const files = tree.files;
+
+    // Use optimistic approach if closing the directory
+    const file = files[fileInd];
+    if (file.isExpanded) {
+      const treeInd = tree.treeInd;
+      dispatch({ type: 'TOGGLE_EXPANSION', payload: { treeInd, fileInd } });
+    }
+
     const { name, path, id } = files[0];
     const expandedDirs = filterExpanded(files, fileInd);
     const updatedRoot = { name, path, id, expandedDirs };

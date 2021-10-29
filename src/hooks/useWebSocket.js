@@ -8,16 +8,12 @@ const useWebSocket = (dispatch) => {
     ws.onopen = () => ws.send('ping');
 
     ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log(message);
-      // if (message.type === SET_INTERVIEW) {
-      //   dispatch(message);
-      // }
+      const data = JSON.parse(event.data);
+      dispatch({ type: 'SET_TREES', payload: data });
     };
 
-    // Close on cleanup
     return () => ws.close();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
 export default useWebSocket;

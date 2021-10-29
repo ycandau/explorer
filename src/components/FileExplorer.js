@@ -11,7 +11,7 @@ import '../css/FileExplorer.css';
 const FileExplorer = ({ trees, dispatch }) => {
   return (
     <section className="file-explorer">
-      {trees.map((tree) => (
+      {trees.map((tree, treeInd) => (
         <Tree key={tree.treeInd} tree={tree} dispatch={dispatch} />
       ))}
     </section>

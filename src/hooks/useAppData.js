@@ -38,23 +38,21 @@ const setTrees = (state, payload) => {
   return { ...state, trees, errors };
 };
 
-const toggleExpansion = async (state, payload) => {
-  // const { treeInd, fileInd } = payload;
+const toggleExpansion = (state, payload) => {
+  const { treeInd, fileInd } = payload;
 
-  return state;
+  const prevTree = state.trees[treeInd];
+  const prevFiles = prevTree.files;
+  const prevFile = prevFiles[fileInd];
 
-  // const prevTree = state.trees[treeInd];
-  // const prevFiles = prevTree.files;
-  // const prevFile = prevFiles[fileInd];
+  const file = { ...prevFile, isExpanded: !prevFile.isExpanded };
+  const files = [...prevFiles];
+  files[fileInd] = file;
+  const tree = { ...prevTree, files };
+  const trees = [...state.trees];
+  trees[treeInd] = tree;
 
-  // const file = { ...prevFile, isExpanded: !prevFile.isExpanded };
-  // const files = [...prevFiles];
-  // files[fileInd] = file;
-  // const tree = { ...prevTree, files };
-  // const trees = [...state.trees];
-  // trees[treeInd] = tree;
-
-  // return { ...state, trees };
+  return { ...state, trees };
 };
 
 //------------------------------------------------------------------------------
