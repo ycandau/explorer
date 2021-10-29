@@ -20,6 +20,7 @@
 }
 .file-line .is-file {
   color: var(--color-blue);
+  padding-left: 0.4em;
 }
 .file-line .file-name {
   flex: 1;

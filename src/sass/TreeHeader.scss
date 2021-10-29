@@ -15,6 +15,15 @@
   flex-direction: row;
   align-items: stretch;
 
-  font-size: 12pt;
   line-height: 2;
+
+  &:hover {
+    background-color: var(--color-higlight);
+    cursor: pointer;
+  }
+
+  .file-name {
+    flex: 1;
+    text-align: left;
+  }
 }

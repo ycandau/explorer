@@ -7,10 +7,6 @@
   font-size: 12pt;
   line-height: 1.5;
 
-  .spacer {
-    // border: 1px solid red;
-  }
-
   .file-entry {
     color: var(--color-green);
     flex: 1;
@@ -22,16 +18,13 @@
     }
   }
 
-  .expand-toggle {
-    //
-  }
-
   .is-dir {
     color: var(--color-green);
   }
 
   .is-file {
     color: var(--color-blue);
+    padding-left: 0.4em;
   }
 
   .file-name {
