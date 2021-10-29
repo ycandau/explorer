@@ -71,7 +71,7 @@ A folder can be expanded and collapsed by clicking anywhere on the corresponding
 
 A little extra feedback is provided to the user with a CSS color and scale transition on the caret icon, when the cursor hovers over the line.
 
-The whole tree can also be closed by clicking on the cross situated at the right of the root folder.
+The whole tree can be closed by clicking on the cross situated at the right of the root folder.
 
 ---
 
@@ -95,11 +95,11 @@ To keep the code modular I use a number of custom hooks to:
 - Update the server when folders are expanded or collapsed.
 - Update the server when trees are closed.
 
-The component seems to run smoothly even with large folders such as `node_modules`. As discussed in the README for the server, only data on expanded folders is exchanged to avoid a brute force recursion through the full folder structure. The component also takes advantage of information on the tree structure encoded in the arrays by the server.
+The component seems to run smoothly even with large folders such as `node_modules`. As discussed in the README for the server, only data on expanded folders is exchanged to avoid a brute force recursion through the full folder structure. The component also takes advantage of information on the tree structure included in the arrays sent by the server.
 
 Some of the user actions are well suited for optimistic rendering. When collapsing a folder or closing a tree we can update the local state before sending the asynchronous request to the server. On the other hand, expanding a folder does require waiting for the response from the server.
 
-I considered providing visual feedback to indicate the status of the asynchronous requests (loading and such...). But due to the short delays I decided against it as a brief flicker might be more distracting than helpful.
+I considered providing visual feedback to indicate the status of asynchronous requests (loading and such...). But due to the short delays I decided against it as a brief flicker might be more distracting than helpful.
 
 ---
 
@@ -117,7 +117,7 @@ I considered providing visual feedback to indicate the status of the asynchronou
 
 - [React](https://reactjs.org/): A JavaScript library for building user interfaces.
 - [axios](https://github.com/axios/axios): Promise based HTTP client for the browser and Node.js.
-- [react-fontawesome](https://github.com/FortAwesome/react-fontawesome): Font Awesome 5 React components using SVG with JS.
+- [react-fontawesome](https://github.com/FortAwesome/react-fontawesome): Font Awesome 5 React components using SVG.
 
 ---
 
