@@ -1,8 +1,9 @@
 //------------------------------------------------------------------------------
 // Imports
 
-import useFileExplorerData from '../hooks/useFileExploreData';
-import useAxios from '../hooks/useAxios';
+import useAppData from '../hooks/useAppData';
+import useInitialGet from '../hooks/useInitialGet';
+import useWebSocket from '../hooks/useWebSocket';
 
 import Header from './Header';
 import FileExplorer from './FileExplorer';
@@ -14,10 +15,11 @@ import '../css/App.css';
 // Component
 
 const App = () => {
-  const [state, dispatch] = useFileExplorerData();
+  const [state, dispatch] = useAppData();
   const { trees } = state;
 
-  useAxios.useInitialGet(dispatch);
+  useInitialGet(dispatch);
+  useWebSocket(dispatch);
 
   return (
     <main id="app">
