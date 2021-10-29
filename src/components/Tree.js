@@ -47,7 +47,7 @@ const Tree = ({ tree, dispatch }) => {
   const visibleFiles = filterVisible(tree.files);
 
   return (
-    <div className="tree">
+    <div className={`tree ${root.isExpanded && 'is-expanded'}`}>
       <TreeHeader
         name={root.name}
         isExpanded={root.isExpanded}
