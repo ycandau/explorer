@@ -3,11 +3,8 @@
 - [About](#about)
 - [Installation](#installation)
 - [Overview](#overview)
-
 - [Implementation and choices](#implementation-and-choices)
-- [Notes](#notes)
-- [Things to improve](#things-to-improve)
-- [Issues](#issues)
+- [Things to do](#things-to-do)
 - [Dependencies](#dependencies)
 - [Development dependencies](#development-dependencies)
 
@@ -78,7 +75,7 @@ The whole tree can also be closed by clicking on the cross situated at the right
 
 ---
 
-## Implementation
+## Implementation and choices
 
 I used React's functional components since it is the recommended approach in the latest versions of the framework.
 
