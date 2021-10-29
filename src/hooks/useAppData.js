@@ -59,6 +59,14 @@ const toggleExpansion = (state, payload) => {
 
 //------------------------------------------------------------------------------
 
+const deleteRoot = (state, payload) => {
+  const treeInd = payload;
+  const trees = state.trees.filter((tree) => tree.treeInd !== treeInd);
+  return { ...state, trees };
+};
+
+//------------------------------------------------------------------------------
+
 const setStatus = (state, payload, status) => {
   const changeThisTree = allOrSome(payload);
 
@@ -90,6 +98,9 @@ const fileExplorerReducer = (state, { type, payload }) => {
 
     case 'TOGGLE_EXPANSION':
       return toggleExpansion(state, payload);
+
+    case 'DELETE_ROOT':
+      return deleteRoot(state, payload);
 
     case 'LOADING':
     case 'FINISHED':

@@ -6,4 +6,5 @@
   color: var(--color-foreground);
   background-color: var(--color-background-2);
   transition: color 300ms, background-color 300ms, border-color 300ms;
+  overflow: auto;
 }

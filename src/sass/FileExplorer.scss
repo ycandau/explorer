@@ -11,4 +11,6 @@
   background-color: var(--color-background-2);
 
   @include color-transition;
+
+  overflow: auto;
 }

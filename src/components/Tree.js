@@ -2,6 +2,7 @@
 // Imports
 
 import usePutRoot from '../hooks/usePutRoot';
+import useDeleteRoot from '../hooks/useDeleteRoot';
 
 import TreeHeader from './TreeHeader';
 import FileEntry from './FileEntry';
@@ -13,8 +14,10 @@ import '../css/Tree.css';
 
 const Tree = ({ tree, dispatch }) => {
   const put = usePutRoot(dispatch);
+  const del = useDeleteRoot(dispatch);
 
-  // Action
+  //----------------------------------------------------------------------------
+  // Actions
 
   const toggleExpansion = (fileInd) => () => {
     const files = tree.files;
@@ -32,10 +35,16 @@ const Tree = ({ tree, dispatch }) => {
     put(updatedRoot);
   };
 
+  const closeTree = () => {
+    dispatch({ type: 'DELETE_ROOT', payload: tree.treeInd });
+    const treeId = tree.files[0].id;
+    del(treeId);
+  };
+
+  //----------------------------------------------------------------------------
+
   const root = tree.files[0];
   const visibleFiles = filterVisible(tree.files);
-
-  // Return component
 
   return (
     <div className="tree">
@@ -43,6 +52,7 @@ const Tree = ({ tree, dispatch }) => {
         name={root.name}
         isExpanded={root.isExpanded}
         toggleExpansion={toggleExpansion(root.index)}
+        closeTree={closeTree}
       />
       {visibleFiles.slice(1).map((file) => (
         <FileEntry
