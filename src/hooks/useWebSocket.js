@@ -1,4 +1,10 @@
+//------------------------------------------------------------------------------
+// Imports
+
 import { useEffect } from 'react';
+
+//------------------------------------------------------------------------------
+// Hook
 
 const useWebSocket = (dispatch) => {
   useEffect(() => {
@@ -15,5 +21,7 @@ const useWebSocket = (dispatch) => {
     return () => ws.close();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };
+
+//------------------------------------------------------------------------------
 
 export default useWebSocket;

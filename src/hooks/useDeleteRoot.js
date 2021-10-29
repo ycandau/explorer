@@ -1,8 +1,6 @@
 //------------------------------------------------------------------------------
 // Imports
 
-import { useEffect } from 'react';
-
 import axios from 'axios';
 
 if (process.env.REACT_APP_API_BASE_URL) {
@@ -12,15 +10,16 @@ if (process.env.REACT_APP_API_BASE_URL) {
 //------------------------------------------------------------------------------
 // Hook
 
-const useInitialGet = (dispatch) => {
-  useEffect(() => {
+const useDeleteRoot = (dispatch) => {
+  const del = (rootId) => {
     axios
-      .get('/api')
+      .delete(`/api/${rootId}`)
       .then((res) => dispatch({ type: 'SET_TREES', payload: res.data }))
       .catch((err) => dispatch({ type: 'ERROR', payload: err }));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  };
+  return del;
 };
 
 //------------------------------------------------------------------------------
 
-export default useInitialGet;
+export default useDeleteRoot;

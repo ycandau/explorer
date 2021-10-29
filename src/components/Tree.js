@@ -2,11 +2,71 @@
 // Imports
 
 import usePutRoot from '../hooks/usePutRoot';
+import useDeleteRoot from '../hooks/useDeleteRoot';
 
 import TreeHeader from './TreeHeader';
 import FileEntry from './FileEntry';
 
 import '../css/Tree.css';
+
+//------------------------------------------------------------------------------
+// Component
+
+const Tree = ({ tree, dispatch }) => {
+  const put = usePutRoot(dispatch);
+  const del = useDeleteRoot(dispatch);
+
+  //----------------------------------------------------------------------------
+  // Actions
+
+  const toggleExpansion = (fileInd) => () => {
+    const files = tree.files;
+
+    // Use optimistic approach if closing the directory
+    const file = files[fileInd];
+    if (file.isExpanded) {
+      const treeInd = tree.treeInd;
+      dispatch({ type: 'TOGGLE_EXPANSION', payload: { treeInd, fileInd } });
+    }
+
+    const { name, path, id } = files[0];
+    const expandedDirs = filterExpanded(files, fileInd);
+    const updatedRoot = { name, path, id, expandedDirs };
+    put(updatedRoot);
+  };
+
+  const closeTree = () => {
+    dispatch({ type: 'DELETE_ROOT', payload: tree.treeInd });
+    const treeId = tree.files[0].id;
+    del(treeId);
+  };
+
+  //----------------------------------------------------------------------------
+
+  const root = tree.files[0];
+  const visibleFiles = filterVisible(tree.files);
+
+  return (
+    <div className={`tree ${root.isExpanded && 'is-expanded'}`}>
+      <TreeHeader
+        name={root.name}
+        isExpanded={root.isExpanded}
+        toggleExpansion={toggleExpansion(root.index)}
+        closeTree={closeTree}
+      />
+      {visibleFiles.slice(1).map((file) => (
+        <FileEntry
+          key={file.id}
+          name={file.name}
+          depth={file.depth}
+          isDir={file.isDir}
+          isExpanded={file.isExpanded}
+          toggleExpansion={toggleExpansion(file.index)}
+        />
+      ))}
+    </div>
+  );
+};
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -36,7 +96,7 @@ const filterExpanded = (files, fileInd) => {
   for (let i = 0; i < files.length; ) {
     const file = files[i];
 
-    // Toggled expansion state to be
+    // The new expanded state that will be after toggling
     const isExpanded = i === fileInd ? !file.isExpanded : file.isExpanded;
 
     if (isExpanded) {
@@ -45,52 +105,6 @@ const filterExpanded = (files, fileInd) => {
     i = nextFileIndex(file, isExpanded, i);
   }
   return expandedDirs;
-};
-
-//------------------------------------------------------------------------------
-// Component
-
-const Tree = ({ tree, dispatch }) => {
-  const put = usePutRoot(dispatch);
-
-  const toggleExpansion = (fileInd) => () => {
-    const files = tree.files;
-
-    // Use optimistic approach if closing the directory
-    const file = files[fileInd];
-    if (file.isExpanded) {
-      const treeInd = tree.treeInd;
-      dispatch({ type: 'TOGGLE_EXPANSION', payload: { treeInd, fileInd } });
-    }
-
-    const { name, path, id } = files[0];
-    const expandedDirs = filterExpanded(files, fileInd);
-    const updatedRoot = { name, path, id, expandedDirs };
-    put(updatedRoot);
-  };
-
-  const root = tree.files[0];
-  const visibleFiles = filterVisible(tree.files);
-
-  return (
-    <div className="tree">
-      <TreeHeader
-        name={root.name}
-        isExpanded={root.isExpanded}
-        toggleExpansion={toggleExpansion(root.index)}
-      />
-      {visibleFiles.map((file) => (
-        <FileEntry
-          key={file.id}
-          name={file.name}
-          depth={file.depth}
-          isDir={file.isDir}
-          isExpanded={file.isExpanded}
-          toggleExpansion={toggleExpansion(file.index)}
-        />
-      ))}
-    </div>
-  );
 };
 
 //------------------------------------------------------------------------------

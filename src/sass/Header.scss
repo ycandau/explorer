@@ -18,26 +18,25 @@
 
   .app-name {
     font-family: 'Fira mono';
-    font-size: 30px;
+    font-size: 26px;
   }
 
   .theme-toggle {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 25px;
     border: 1px solid transparent;
 
     @include center;
 
     .icon {
-      font-size: 30px;
+      font-size: 28px;
     }
 
     &:hover {
       cursor: pointer;
-      color: var(--color-bright-yellow);
-      background-color: var(--color-highlight-yellow);
-      // border: 1px solid var(--color-bright-yellow);
+      color: var(--color-theme-toggle);
+      background-color: var(--color-theme-toggle-bg);
       @include color-transition;
     }
   }

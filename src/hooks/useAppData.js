@@ -12,20 +12,6 @@ const initState = {
 };
 
 //------------------------------------------------------------------------------
-// Helpers
-
-// Create a predicate to accept all indexes or only indexes passed in an array.
-const allOrSome = (payload) => {
-  // True for all
-  if (payload === 'all') {
-    return (_) => true;
-  }
-  // Or only when the index is included in a set
-  const set = new Set(payload);
-  return (treeInd) => set.has(treeInd);
-};
-
-//------------------------------------------------------------------------------
 // Actions
 
 const setTrees = (state, payload) => {
@@ -37,6 +23,8 @@ const setTrees = (state, payload) => {
   }));
   return { ...state, trees, errors };
 };
+
+//------------------------------------------------------------------------------
 
 const toggleExpansion = (state, payload) => {
   const { treeInd, fileInd } = payload;
@@ -57,16 +45,9 @@ const toggleExpansion = (state, payload) => {
 
 //------------------------------------------------------------------------------
 
-const setStatus = (state, payload, status) => {
-  const changeThisTree = allOrSome(payload);
-
-  const trees = state.trees.map((prevTree) => {
-    const tree = changeThisTree(prevTree.treeInd)
-      ? { ...prevTree, status }
-      : prevTree;
-    return tree;
-  });
-
+const deleteRoot = (state, payload) => {
+  const treeInd = payload;
+  const trees = state.trees.filter((tree) => tree.treeInd !== treeInd);
   return { ...state, trees };
 };
 
@@ -89,9 +70,8 @@ const fileExplorerReducer = (state, { type, payload }) => {
     case 'TOGGLE_EXPANSION':
       return toggleExpansion(state, payload);
 
-    case 'LOADING':
-    case 'FINISHED':
-      return setStatus(state, payload, type);
+    case 'DELETE_ROOT':
+      return deleteRoot(state, payload);
 
     case 'ERROR':
       return setError(state, payload);
