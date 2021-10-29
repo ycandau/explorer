@@ -2,6 +2,10 @@
   transition: color 300ms, background-color 300ms, border-color 300ms;
 }
 
+@mixin transform-transition {
+  transition: transform 300ms;
+}
+
 @mixin center {
   display: flex;
   justify-content: center;
