@@ -12,7 +12,7 @@
 
 ## About
 
-This repository contains a a **file explorer** component built with [React](https://reactjs.org/) and [Sass](https://github.com/sass/dart-sass). It renders a set of directory trees served by a backend API, and is updated on file changes through a WebSocket connection.
+This repository contains a **file explorer** component built with [React](https://reactjs.org/) and [Sass](https://github.com/sass/dart-sass). It renders a set of directory trees served by a backend API, and is updated on file changes through a WebSocket connection.
 
 ---
 
